@@ -53,21 +53,25 @@ public class LoginViewModel extends ViewModel {
     }
     public  void loginRxAction(String account,String password){
         FormBody body = new ApiBody().sendLoginApi(account,password);
-        model.callRxLoginApi(new RxApiResponseCallBack<LoginResponse>() {
+        isLoading.set(true);
+        model.callRxLoginApi(body, new RxApiResponseCallBack() {
             @Override
-            public void getLoginCallBackResponse(Response<LoginResponse> response) {
-//                isLoading.set(true);
-//                if (response.isSuccessful()){
-//                    userName.setValue(response.body().getName());
-//                }
-//                isLoading.set(false);
+            public void getRxLoginCallBackResponse(LoginResponse response) {
+                if(response.getCode()==200){
+                    userName.postValue(response.getName());
+                    userAge.postValue(response.getAge());
+                    userName.postValue(response.getName());
+                }
+                isLoading.set(false);
             }
 
             @Override
             public void getLoginErrorResponse(Throwable t) {
+                errorMessage.postValue(t.getMessage());
                 isLoading.set(false);
             }
         });
     }
+
 
 }

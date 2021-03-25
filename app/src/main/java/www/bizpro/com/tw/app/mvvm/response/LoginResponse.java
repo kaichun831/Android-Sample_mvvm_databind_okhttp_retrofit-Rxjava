@@ -9,6 +9,17 @@ import retrofit2.Response;
 
 //@SerializedName 為了使OKHttp自動對應
 public class LoginResponse implements Serializable {
+    @SerializedName("code")
+    int code;
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
     @SerializedName("account")
     String account;
     @SerializedName("password")

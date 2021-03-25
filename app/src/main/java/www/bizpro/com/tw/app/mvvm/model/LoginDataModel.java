@@ -1,6 +1,8 @@
 package www.bizpro.com.tw.app.mvvm.model;
 
 
+import android.util.Log;
+
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
@@ -40,28 +42,35 @@ public class LoginDataModel {
     }
 
 
-    public void callRxLoginApi(RxApiResponseCallBack apiCallBack) {
-        RxapiService.doRxLogin()
+    public void callRxLoginApi(FormBody body,RxApiResponseCallBack apiCallBack) {
+        RxapiService.doRxLogin(body)
                 .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.single())
                 .subscribe(new Observer<LoginResponse>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-
+                        Log.d("KAI","Disposable"+Thread.currentThread().getName());
                     }
 
                     @Override
                     public void onNext(@NonNull LoginResponse loginResponse) {
+                        if(loginResponse.getCode()==200){
+                            apiCallBack.getRxLoginCallBackResponse(loginResponse);
+                        }else{
+                            apiCallBack.getRxLoginCallBackResponse(new LoginResponse());
+                        }
 
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        Log.d("KAI","e"+Thread.currentThread().getName());
+                        apiCallBack.getLoginErrorResponse(e);
                     }
 
                     @Override
                     public void onComplete() {
-
+                        Log.d("KAI","complete"+Thread.currentThread().getName());
                     }
                 });
 
