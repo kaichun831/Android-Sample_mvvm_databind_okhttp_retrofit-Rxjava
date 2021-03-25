@@ -5,13 +5,13 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RxApiManager {
     private  final  String baseUrl = "https://jsonplaceholder.typicode.com/";
     private ApiService apiService;
-    private static ApiManager mInstance = new ApiManager();
+    private static RxApiManager mInstance = new RxApiManager();
     RxApiManager(){
         OkHttpClient client = new  OkHttpClient().newBuilder()
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
@@ -22,7 +22,7 @@ public class RxApiManager {
         Retrofit retrofit = new  Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.createSynchronous())
                 .client(client)
                 .build();
         apiService = retrofit.create(ApiService.class);
@@ -30,7 +30,7 @@ public class RxApiManager {
     public  ApiService getAPI(){
         return apiService;
     }
-    public static ApiManager getInstance() {
+    public static RxApiManager getInstance() {
         return mInstance;
     }
 

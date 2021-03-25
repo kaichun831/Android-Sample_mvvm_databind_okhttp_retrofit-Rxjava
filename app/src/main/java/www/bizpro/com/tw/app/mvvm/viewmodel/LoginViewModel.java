@@ -14,6 +14,7 @@ import www.bizpro.com.tw.app.mvvm.tools.SingleLiveEvent;
 import www.bizpro.com.tw.app.mvvm.webapi.ApiResponse;
 import www.bizpro.com.tw.app.mvvm.webapi.ApiResponseCallBack;
 import www.bizpro.com.tw.app.mvvm.webapi.ApiBody;
+import www.bizpro.com.tw.app.mvvm.webapi.RxApiResponseCallBack;
 
 public class LoginViewModel extends ViewModel {
     final  String tag ="LoginViewModel";
@@ -51,27 +52,19 @@ public class LoginViewModel extends ViewModel {
         });
     }
     public  void loginRxAction(String account,String password){
-        isLoading.set(true);
         FormBody body = new ApiBody().sendLoginApi(account,password);
-        model.callRxLoginApi(body, new ApiResponseCallBack<LoginResponse>() {
+        model.callRxLoginApi(new RxApiResponseCallBack<LoginResponse>() {
             @Override
-            public void getLoginCallBackResponse(ApiResponse<LoginResponse> response) {
-                isLoading.set(true);
-                code=response.code;
-                if(response.isSuccessful()){
-                    userName.setValue(response.body.getName());
-                    userAge.setValue(response.body.getAge());
-                    userSex.setValue(response.body.getSex());
-                }else{
-                    errorMessage.setValue(response.errorMessage);
-                }
-                isLoading.set(false);
-
+            public void getLoginCallBackResponse(Response<LoginResponse> response) {
+//                isLoading.set(true);
+//                if (response.isSuccessful()){
+//                    userName.setValue(response.body().getName());
+//                }
+//                isLoading.set(false);
             }
 
             @Override
             public void getLoginErrorResponse(Throwable t) {
-                Log.d(tag,t.getMessage());
                 isLoading.set(false);
             }
         });
