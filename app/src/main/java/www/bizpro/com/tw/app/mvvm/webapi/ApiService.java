@@ -23,8 +23,4 @@ public interface ApiService {
     //OkHttp+Retrofit+Rx
     @POST("albums/")
     Observable<LoginResponse> doRxLogin(@Body FormBody body);
-
-    @POST("albums/")
-    @FormUrlEncoded
-    Observable<LoginResponse> doMutliType(@Field("String") String str, @Field("age") int age);
 }
