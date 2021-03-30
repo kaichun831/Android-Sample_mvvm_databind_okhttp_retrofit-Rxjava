@@ -1,35 +1,17 @@
 package www.bizpro.com.tw.app.mvvm.view.activity;
 
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Scheduler;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import www.bizpro.com.tw.app.mvvm.R;
 import www.bizpro.com.tw.app.mvvm.databinding.ActivityLoginBinding;
-import www.bizpro.com.tw.app.mvvm.response.LoginResponse;
 import www.bizpro.com.tw.app.mvvm.viewmodel.LoginViewModel;
-import www.bizpro.com.tw.app.mvvm.webapi.ApiService;
-import www.bizpro.com.tw.app.mvvm.webapi.RxApiManager;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityLoginBinding binding;
@@ -73,7 +55,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                });
     }
 
-
     private void init() {
         //TODO 預載
         listener();
@@ -98,10 +79,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.BT_login: {
                 String account = binding.EDAccount.getText().toString();
                 String password = binding.EDPassword.getText().toString();
+
                 //進行OKHttp+Retrofit動作
 //                model.loginAction(account, password);
                 //進行OKHttp+Retrofit+RxJava動作
-                model.loginRxAction(account,password);
+                model.loginRxAction(account, password);
+
                 //Api成功呼叫Show錯誤訊息
                 model.errorMessage.observe(this, new Observer() {
                     @Override
@@ -115,6 +98,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
     }
-
-
 }
