@@ -5,6 +5,5 @@ package www.bizpro.com.tw.app.mvvm.webapi;
 
 public interface ApiResponseCallBack<T> {
     void getLoginCallBackResponse(ApiResponse<T> response);
-
     void getLoginErrorResponse(Throwable t);
 }

@@ -14,14 +14,10 @@ public class RxApiManager {
     private static RxApiManager mInstance;
 
     public RxApiManager() {
+        final String baseUrl = "https://jsonplaceholder.typicode.com/";
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                .readTimeout(15, TimeUnit.SECONDS)
-                .writeTimeout(15, TimeUnit.SECONDS)
                 .build();
-
-        final String baseUrl = "https://jsonplaceholder.typicode.com/";
-
         // 設置baseUrl即要連的網站，addConverterFactory用Gson作為資料處理Converter
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)

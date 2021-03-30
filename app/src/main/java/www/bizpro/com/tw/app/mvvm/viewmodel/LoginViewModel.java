@@ -20,7 +20,7 @@ public class LoginViewModel extends ViewModel {
     public MutableLiveData<String> userName = new MutableLiveData<>("KG"); //預設
     public MutableLiveData<Integer> userAge = new MutableLiveData<>(40);
     public MutableLiveData userSex = new MutableLiveData(0);
-    public SingleLiveEvent errorMessage = new SingleLiveEvent();
+    public SingleLiveEvent<String> errorMessage = new SingleLiveEvent();
 
     /**
      * 登入動作對應畫面變化
@@ -59,11 +59,9 @@ public class LoginViewModel extends ViewModel {
         model.callRxLoginApi(body, new RxApiResponseCallBack() {
             @Override
             public void getRxLoginCallBackResponse(LoginResponse response) {
-                if (response.getCode() == 200) {
-                    userName.postValue(response.getName());
-                    userAge.postValue(response.getAge());
-                    userName.postValue(response.getName());
-                }
+                userName.postValue(response.getName());
+                userAge.postValue(response.getAge());
+                userName.postValue(response.getName());
                 isLoading.postValue(false);
             }
 
