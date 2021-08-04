@@ -1,31 +1,24 @@
 package www.bizpro.com.tw.app.mvvm.model;
 
 
-import android.util.Log;
-
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.core.Scheduler;
-import io.reactivex.rxjava3.core.SingleObserver;
-import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import www.bizpro.com.tw.app.mvvm.response.LoginResponse;
+import www.bizpro.com.tw.app.mvvm.webapi.ApiManager;
 import www.bizpro.com.tw.app.mvvm.webapi.ApiResponse;
 import www.bizpro.com.tw.app.mvvm.webapi.ApiResponseCallBack;
 import www.bizpro.com.tw.app.mvvm.webapi.ApiService;
-import www.bizpro.com.tw.app.mvvm.webapi.ApiManager;
-import www.bizpro.com.tw.app.mvvm.response.LoginResponse;
 import www.bizpro.com.tw.app.mvvm.webapi.RxApiManager;
 import www.bizpro.com.tw.app.mvvm.webapi.RxApiResponseCallBack;
 
-public class LoginDataModel {
+public class LoginDataModel extends BaseDataModel {
     ApiService apiService = ApiManager.getInstance().getAPI();
 
-    ApiService RxapiService = RxApiManager.getInstance().getAPI();
+    ApiService RxApiService = RxApiManager.getInstance().getAPI();
 
     public void callLoginApi(FormBody body, ApiResponseCallBack apiCallBack) {
         apiService.doLogin(body).enqueue(new Callback<LoginResponse>() {
@@ -42,55 +35,11 @@ public class LoginDataModel {
     }
 
 
-    public void callRxLoginApi(FormBody body,RxApiResponseCallBack apiCallBack) {
-        RxapiService.doRxLogin(body)
+    public void callRxLoginApi(RequestBody body, RxApiResponseCallBack apiCallBack) {
+        RxApiService.doRxLogin(body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.single())
-                .subscribe(new Observer<LoginResponse>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        Log.d("KAI","Disposable"+Thread.currentThread().getName());
-                    }
-
-                    @Override
-                    public void onNext(@NonNull LoginResponse loginResponse) {
-                        if(loginResponse.getCode()==200){
-                            apiCallBack.getRxLoginCallBackResponse(loginResponse);
-                        }else{
-                            apiCallBack.getRxLoginCallBackResponse(new LoginResponse());
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        Log.d("KAI","e"+Thread.currentThread().getName());
-                        apiCallBack.getLoginErrorResponse(e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.d("KAI","complete"+Thread.currentThread().getName());
-                    }
-                });
-
-
-//        .subscribeOn(Schedulers.io()).observeOn(Schedulers.single()).subscribe(new SingleObserver<LoginResponse>() {
-//            @Override
-//            public void onSubscribe(@NonNull Disposable d) {
-//
-//            }
-//
-//            @Override
-//            public void onSuccess(@NonNull LoginResponse loginResponse) {
-//
-//            }
-//
-//            @Override
-//            public void onError(@NonNull Throwable e) {
-//
-//            }
-//        })
+                .subscribe(response -> apiCallBack.getRxLoginCallBackResponse(response), throwable -> apiCallBack.getLoginErrorResponse(throwable));
     }
 
 

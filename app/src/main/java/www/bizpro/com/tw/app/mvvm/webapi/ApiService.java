@@ -4,7 +4,9 @@ package www.bizpro.com.tw.app.mvvm.webapi;
 import android.util.Log;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -22,5 +24,5 @@ public interface ApiService {
 
     //OkHttp+Retrofit+Rx
     @POST("albums/")
-    Observable<LoginResponse> doRxLogin(@Body FormBody body);
+    Single<Response<LoginResponse>> doRxLogin(@Body RequestBody body);
 }

@@ -14,12 +14,6 @@ import org.mockito.MockitoAnnotations;
 import java.util.Arrays;
 import java.util.List;
 
-import java.util.regex.Matcher;
-
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
 
 import static org.junit.Assert.*;
 
@@ -59,7 +53,7 @@ public class MathUnitTest {
         MyMath myMath =new MyMath(mockLogger);
         myMath.add(-1,-2);
         //assert
-        //verify 驗證  代操mockLogger的class 使用內部的方法log
+        //verify 驗證是否呼叫此函數  代操mockLogger的class 使用內部的方法log
         Mockito.verify(mockLogger).log(Mockito.anyString());
     }
 

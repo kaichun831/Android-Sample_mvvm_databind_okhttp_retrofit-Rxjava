@@ -4,22 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import retrofit2.Response;
-
 
 //@SerializedName 為了使OKHttp自動對應
-public class LoginResponse implements Serializable {
+public class LoginResponse {
     @SerializedName("code")
     int code;
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
     @SerializedName("account")
     String account;
     @SerializedName("password")
@@ -33,6 +22,14 @@ public class LoginResponse implements Serializable {
     @SerializedName("id")
     int id;
 
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
 
     public String getAccount() {
         return account;
