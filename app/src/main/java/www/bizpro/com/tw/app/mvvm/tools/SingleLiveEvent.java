@@ -1,3 +1,6 @@
+/*
+  LiveData 避免重複訊息
+ */
 package www.bizpro.com.tw.app.mvvm.tools;
 
 import android.util.Log;
@@ -10,11 +13,9 @@ import androidx.lifecycle.Observer;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-
-//LiveData 避免重複訊息
 public class SingleLiveEvent<T> extends MutableLiveData<T> {
 
-    private static final String TAG = "SingleLiveEvent";
+    private final String TAG = this.getClass().getSimpleName();
 
     private final AtomicBoolean mPending = new AtomicBoolean(false);
 

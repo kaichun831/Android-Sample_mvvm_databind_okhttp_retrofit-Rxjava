@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-
 //@SerializedName 為了使OKHttp自動對應
 public class LoginResponse {
+    //@SerializedName 為了使OKHttp自動對應
     @SerializedName("code")
     int code;
     @SerializedName("account")
@@ -21,8 +21,6 @@ public class LoginResponse {
     int sex;
     @SerializedName("id")
     int id;
-
-
     public int getCode() {
         return code;
     }

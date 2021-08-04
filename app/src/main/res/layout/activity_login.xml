@@ -11,13 +11,12 @@
             type="www.bizpro.com.tw.app.mvvm.viewmodel.LoginViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/View_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:focusableInTouchMode="true">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/TV_userName"
@@ -45,20 +44,19 @@
             app:layout_constraintLeft_toLeftOf="@+id/TV_userName" />
 
         <EditText
+            app:layout_constraintTop_toBottomOf="@+id/BT_login"
             android:id="@+id/ED_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:inputType="text"
-            app:layout_constraintTop_toBottomOf="@+id/BT_login" />
-
+            android:inputType="text"/>
         <EditText
+            app:layout_constraintTop_toBottomOf="@+id/ED_account"
             android:id="@+id/ED_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:inputType="text"
-            app:layout_constraintTop_toBottomOf="@+id/ED_account" />
+            android:inputType="text"/>
 
         <Button
             android:id="@+id/BT_login"

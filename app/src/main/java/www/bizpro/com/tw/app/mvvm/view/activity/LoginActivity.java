@@ -1,53 +1,49 @@
-package www.bizpro.com.tw.app.mvvm.view;
+package www.bizpro.com.tw.app.mvvm.view.activity;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import www.bizpro.com.tw.app.mvvm.R;
 import www.bizpro.com.tw.app.mvvm.databinding.ActivityLoginBinding;
-import www.bizpro.com.tw.app.mvvm.model.LoginDataModel;
-import www.bizpro.com.tw.app.mvvm.viewmodel.AndroidViewModelFactory;
 import www.bizpro.com.tw.app.mvvm.viewmodel.LoginViewModel;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityLoginBinding binding;
-    private LoginViewModel loginViewModel;
+    private LoginViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-        LoginDataModel loginDataModel = new LoginDataModel();
-        AndroidViewModelFactory androidViewModelFactory = new AndroidViewModelFactory(getApplication(), loginDataModel);
-        loginViewModel = new ViewModelProvider(this, androidViewModelFactory).get(LoginViewModel.class);
-        binding.setViewModel(loginViewModel);
+        model = new ViewModelProvider(this).get(LoginViewModel.class);
+        binding.setViewModel(model);
         binding.setLifecycleOwner(this);
         init();
 
     }
 
     private void init() {
+        //TODO 預載
         listener();
-        viewModelAction();
+        event();
     }
 
     private void listener() {
         //登入按鈕
         binding.BTLogin.setOnClickListener(this);
-        binding.EDAccount.setOnFocusChangeListener(this);
-        binding.EDPassword.setOnFocusChangeListener(this);
     }
-
-    private void viewModelAction() {
-        loginViewModel.errorMessage.observe(this, new Observer() {
+    private  void event(){
+        //Api成功呼叫Show錯誤訊息
+        model.errorMessage.observe(this, new Observer<String>() {
             @Override
-            public void onChanged(Object o) {
-                Toast.makeText(LoginActivity.this, o.toString(), Toast.LENGTH_SHORT).show();
+            public void onChanged(String message) {
+                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -55,7 +51,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        loginViewModel = null;
+        model = null;
         binding = null;  //釋放資源
     }
 
@@ -66,10 +62,11 @@ public class LoginActivity extends BaseActivity {
             case R.id.BT_login: {
                 String account = binding.EDAccount.getText().toString();
                 String password = binding.EDPassword.getText().toString();
-//                model.loginAction(account, password);//進行OKHttp+Retrofit動作
-                loginViewModel.loginRxAction(account, password);//進行OKHttp+Retrofit+RxJava動作
-                //Api成功呼叫Show錯誤訊息
 
+                //進行OKHttp+Retrofit動作
+//                model.loginAction(account, password);
+                //進行OKHttp+Retrofit+RxJava動作
+                model.loginRxAction(account, password);
             }
         }
     }

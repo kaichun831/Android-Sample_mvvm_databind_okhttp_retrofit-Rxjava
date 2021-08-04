@@ -15,10 +15,14 @@ import www.bizpro.com.tw.app.mvvm.webapi.ApiService;
 import www.bizpro.com.tw.app.mvvm.webapi.RxApiManager;
 import www.bizpro.com.tw.app.mvvm.webapi.RxApiResponseCallBack;
 
-public class LoginDataModel extends BaseDataModel {
-    ApiService apiService = ApiManager.getInstance().getAPI();
 
-    ApiService RxApiService = RxApiManager.getInstance().getAPI();
+public class LoginDataModel extends BaseDataModel {
+    ApiService apiService;
+    ApiService rxApiService;
+    public LoginDataModel() {
+        this.apiService = ApiManager.getInstance().getAPI();
+        this.rxApiService = RxApiManager.getInstance().getAPI();
+    }
 
     public void callLoginApi(FormBody body, ApiResponseCallBack apiCallBack) {
         apiService.doLogin(body).enqueue(new Callback<LoginResponse>() {
@@ -36,11 +40,9 @@ public class LoginDataModel extends BaseDataModel {
 
 
     public void callRxLoginApi(RequestBody body, RxApiResponseCallBack apiCallBack) {
-        RxApiService.doRxLogin(body)
+        rxApiService.doRxLogin(body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.single())
                 .subscribe(response -> apiCallBack.getRxLoginCallBackResponse(response), throwable -> apiCallBack.getLoginErrorResponse(throwable));
     }
-
-
 }
